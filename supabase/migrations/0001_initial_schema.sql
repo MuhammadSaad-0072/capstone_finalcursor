@@ -17,12 +17,16 @@ revoke all on table public.paper_trades from anon, authenticated;
 grant select on table public.paper_trades to authenticated;
 grant select, insert on table public.paper_trades to service_role;
 
+drop policy if exists "Users can read their own paper trades"
+  on public.paper_trades;
 create policy "Users can read their own paper trades"
   on public.paper_trades
   for select
   to authenticated
   using ((select auth.uid()) = user_id);
 
+drop policy if exists "Users can insert their own paper trades"
+  on public.paper_trades;
 create policy "Users can insert their own paper trades"
   on public.paper_trades
   for insert
