@@ -11,7 +11,7 @@ export async function GET() {
     return NextResponse.json({ error: "Authentication is not configured." }, { status: 503 });
   }
   const { data, error } = await supabase.auth.getUser();
-  if (error) {
+  if (error && error.name !== "AuthSessionMissingError") {
     return NextResponse.json({ error: "Could not verify the current session." }, { status: 401 });
   }
   return NextResponse.json({
